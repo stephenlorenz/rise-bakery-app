@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(yarn add @supabase/supabase-js @stripe/stripe-js 2>&1 | tail -5)",
+      "Bash(yarn add -D tailwindcss @tailwindcss/forms @tailwindcss/typography postcss autoprefixer 2>&1 | tail -5)",
+      "Bash(yarn add -D @tailwindcss/postcss 2>&1 | tail -5)",
+      "Bash(yarn build 2>&1 | tail -40)",
+      "Bash(yarn build 2>&1 | tail -50)"
+    ]
+  }
+}

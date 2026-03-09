@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "untitled": {
+    "rise-bakery-app": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -56,10 +56,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "untitled:build:production"
+              "buildTarget": "rise-bakery-app:build:production"
             },
             "development": {
-              "buildTarget": "untitled:build:development"
+              "buildTarget": "rise-bakery-app:build:development"
             }
           },
           "defaultConfiguration": "development"
