@@ -1,35 +1,55 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
-import Stripe from 'https://esm.sh/stripe@14?target=deno';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2?target=deno';
 
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
-  apiVersion: '2024-04-10',
-  httpClient: Stripe.createFetchHttpClient(),
-});
+async function verifyStripeSignature(body: string, sigHeader: string, secret: string): Promise<boolean> {
+  const pairs = sigHeader.split(',');
+  const timestamp = pairs.find((p) => p.startsWith('t='))?.slice(2);
+  const signatures = pairs.filter((p) => p.startsWith('v1=')).map((p) => p.slice(3));
+
+  if (!timestamp || signatures.length === 0) return false;
+
+  // Reject events older than 5 minutes
+  if (Math.abs(Date.now() / 1000 - Number(timestamp)) > 300) return false;
+
+  const payload = `${timestamp}.${body}`;
+  const key = await crypto.subtle.importKey(
+    'raw',
+    new TextEncoder().encode(secret),
+    { name: 'HMAC', hash: 'SHA-256' },
+    false,
+    ['sign'],
+  );
+  const sigBytes = await crypto.subtle.sign('HMAC', key, new TextEncoder().encode(payload));
+  const expected = Array.from(new Uint8Array(sigBytes))
+    .map((b) => b.toString(16).padStart(2, '0'))
+    .join('');
+
+  return signatures.some((sig) => sig === expected);
+}
 
 serve(async (req) => {
   const body = await req.text();
-  const sig = req.headers.get('stripe-signature')!;
+  const sigHeader = req.headers.get('stripe-signature') ?? '';
   const webhookSecret = Deno.env.get('STRIPE_WEBHOOK_SECRET')!;
 
-  let event: Stripe.Event;
-  try {
-    event = await stripe.webhooks.constructEventAsync(body, sig, webhookSecret);
-  } catch (err: any) {
-    console.error('Webhook signature verification failed:', err.message);
+  const valid = await verifyStripeSignature(body, sigHeader, webhookSecret);
+  if (!valid) {
+    console.error('Webhook signature verification failed');
     return new Response(JSON.stringify({ error: 'Invalid signature' }), { status: 400 });
   }
 
+  const event = JSON.parse(body);
+
   if (event.type === 'payment_intent.succeeded') {
-    const pi = event.data.object as Stripe.PaymentIntent;
+    const pi = event.data.object;
     const { customerId, pickupDate, pickupTime, items: itemsJson } = pi.metadata;
 
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!,
     );
 
-    // Check if order already created (idempotency)
+    // Idempotency check
     const { data: existing } = await supabase
       .from('orders')
       .select('id')
@@ -42,13 +62,11 @@ serve(async (req) => {
 
     const items: Array<{ productId: string; quantity: number }> = JSON.parse(itemsJson);
 
-    // Fetch authoritative prices
     const { data: products } = await supabase
       .from('products')
       .select('id, price_cents')
       .in('id', items.map((i) => i.productId));
 
-    // Create order
     const { data: order, error: orderError } = await supabase
       .from('orders')
       .insert({
@@ -67,7 +85,6 @@ serve(async (req) => {
       return new Response(JSON.stringify({ error: orderError.message }), { status: 500 });
     }
 
-    // Create order items
     const orderItems = items.map((item) => ({
       order_id: order.id,
       product_id: item.productId,
