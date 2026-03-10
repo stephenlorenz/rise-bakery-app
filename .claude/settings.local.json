@@ -23,7 +23,9 @@
       "Bash(ls -la /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css && grep -c \"\\\\.flex\" /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css && grep -c \"\\\\.hidden\" /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css && grep -c \"\\\\.w-6\" /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css)",
       "Bash(grep -r \"postcss\" /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/node_modules/@angular/build/src/ --include=\"*.js\" -l 2>/dev/null | head -5)",
       "Bash(yarn build 2>&1 | tail -10)",
-      "Bash(ls -la /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css && grep -c \"\\\\.flex\" /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css && grep -c \"\\\\.hidden\" /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css)"
+      "Bash(ls -la /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css && grep -c \"\\\\.flex\" /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css && grep -c \"\\\\.hidden\" /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/dist/rise-bakery-app/browser/styles-*.css)",
+      "Bash(find /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp/src -type f \\\\\\( -name \"*.ts\" -o -name \"*.tsx\" -o -name \"*.json\" \\\\\\) 2>/dev/null | head -100)",
+      "Bash(find /Users/scl30/workspace/personal/RiseBakeryApp/riseBakeryApp -type f -name \"*.md\" -o -name \"*.sql\" -o -name \"schema*\" 2>/dev/null | grep -v node_modules | grep -v dist | grep -v .angular)"
     ]
   }
 }

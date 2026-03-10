@@ -21,28 +21,35 @@ const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
         } @else {
           <div class="space-y-3">
             @for (day of schedule(); track day.id) {
-              <div class="flex items-center gap-4 py-2 border-b border-[#F5EFE6] last:border-0">
-                <span class="w-24 text-sm font-medium text-[#3E2723]">{{ dayName(day.day_of_week) }}</span>
-                <input type="checkbox" [(ngModel)]="day.is_open"
-                  (ngModelChange)="saveDay(day)"
-                  class="rounded border-[#E8D5B7]" />
-                @if (day.is_open) {
-                  <input type="time" [(ngModel)]="day.pickup_start"
-                    (change)="saveDay(day)"
-                    class="px-2 py-1 border border-[#E8D5B7] rounded text-sm bg-[#FAF7F2]" />
-                  <span class="text-[#8D7B68] text-sm">to</span>
-                  <input type="time" [(ngModel)]="day.pickup_end"
-                    (change)="saveDay(day)"
-                    class="px-2 py-1 border border-[#E8D5B7] rounded text-sm bg-[#FAF7F2]" />
-                  <div class="flex items-center gap-1">
-                    <input type="number" [(ngModel)]="day.slot_interval_minutes"
+              <div class="py-2 border-b border-[#F5EFE6] last:border-0">
+                <div class="flex items-center gap-4">
+                  <span class="w-24 text-sm font-medium text-[#3E2723]">{{ dayName(day.day_of_week) }}</span>
+                  <input type="checkbox" [(ngModel)]="day.is_open"
+                    (ngModelChange)="saveDay(day)"
+                    class="rounded border-[#E8D5B7]" />
+                  @if (day.is_open) {
+                    <input type="time" [(ngModel)]="day.pickup_start"
                       (change)="saveDay(day)"
-                      min="5" max="60" step="5"
-                      class="w-14 px-2 py-1 border border-[#E8D5B7] rounded text-sm bg-[#FAF7F2]" />
-                    <span class="text-xs text-[#8D7B68]">min slots</span>
-                  </div>
-                } @else {
-                  <span class="text-sm text-[#8D7B68]">Closed</span>
+                      class="px-2 py-1 border border-[#E8D5B7] rounded text-sm bg-[#FAF7F2]" />
+                    <span class="text-[#8D7B68] text-sm">to</span>
+                    <input type="time" [(ngModel)]="day.pickup_end"
+                      (change)="saveDay(day)"
+                      [class]="timeErrors()[day.id]
+                        ? 'px-2 py-1 border border-red-400 rounded text-sm bg-[#FAF7F2]'
+                        : 'px-2 py-1 border border-[#E8D5B7] rounded text-sm bg-[#FAF7F2]'" />
+                    <div class="flex items-center gap-1">
+                      <input type="number" [(ngModel)]="day.slot_interval_minutes"
+                        (change)="saveDay(day)"
+                        min="5" max="60" step="5"
+                        class="w-14 px-2 py-1 border border-[#E8D5B7] rounded text-sm bg-[#FAF7F2]" />
+                      <span class="text-xs text-[#8D7B68]">min slots</span>
+                    </div>
+                  } @else {
+                    <span class="text-sm text-[#8D7B68]">Closed</span>
+                  }
+                </div>
+                @if (timeErrors()[day.id]) {
+                  <p class="text-xs text-red-600 mt-1 ml-28">{{ timeErrors()[day.id] }}</p>
                 }
               </div>
             }
@@ -87,6 +94,9 @@ const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
             <input type="text" [(ngModel)]="newOverride.note" placeholder="e.g. Closed for Thanksgiving"
               class="w-full px-2 py-1.5 border border-[#E8D5B7] rounded text-sm bg-white" />
           </div>
+          @if (overrideError()) {
+            <p class="text-xs text-red-600">{{ overrideError() }}</p>
+          }
           <button (click)="addOverride()"
             class="bg-[#B85C38] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#9A4A2C] transition-colors">
             Add override
@@ -125,6 +135,8 @@ export class AdminScheduleComponent implements OnInit {
   loading = signal(true);
   schedule = signal<ScheduleConfig[]>([]);
   overrides = signal<ScheduleOverride[]>([]);
+  timeErrors = signal<Record<string, string>>({});
+  overrideError = signal('');
 
   newOverride = {
     date: '',
@@ -148,6 +160,11 @@ export class AdminScheduleComponent implements OnInit {
   }
 
   async saveDay(day: ScheduleConfig) {
+    if (day.is_open && day.pickup_start && day.pickup_end && day.pickup_end <= day.pickup_start) {
+      this.timeErrors.update(e => ({ ...e, [day.id]: 'End time must be after start time.' }));
+      return;
+    }
+    this.timeErrors.update(({ [day.id]: _, ...rest }) => rest);
     await this.scheduleService.updateDayConfig(day.id, {
       is_open: day.is_open,
       pickup_start: day.pickup_start,
@@ -158,6 +175,11 @@ export class AdminScheduleComponent implements OnInit {
 
   async addOverride() {
     if (!this.newOverride.date) return;
+    if (this.newOverride.is_open && this.newOverride.pickup_end <= this.newOverride.pickup_start) {
+      this.overrideError.set('End time must be after start time.');
+      return;
+    }
+    this.overrideError.set('');
     await this.scheduleService.upsertOverride({
       date: this.newOverride.date,
       is_open: this.newOverride.is_open,

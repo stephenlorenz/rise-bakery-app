@@ -1,10 +1,11 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, signal, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CartService } from '../../core/services/cart.service';
 import { AuthService } from '../../core/services/auth.service';
 import { SupabaseService } from '../../core/services/supabase.service';
 import { PickupSelectorComponent } from './pickup-selector/pickup-selector';
 import { StripePaymentComponent } from './stripe-payment/stripe-payment';
+import { ProductService } from '../../core/services/product.service';
 
 type Step = 'pickup' | 'payment' | 'success';
 
@@ -46,12 +47,25 @@ type Step = 'pickup' | 'payment' | 'success';
           </div>
         </div>
 
+        @if (availabilityWarnings().length > 0) {
+          <div class="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+            <p class="text-sm font-medium text-red-800 mb-2">
+              Some items in your cart are no longer available for this date:
+            </p>
+            <ul class="space-y-1">
+              @for (warning of availabilityWarnings(); track warning) {
+                <li class="text-sm text-red-700">{{ warning }}</li>
+              }
+            </ul>
+          </div>
+        }
+
         <button
           (click)="proceedToPayment()"
-          [disabled]="!pickup() || creatingIntent()"
+          [disabled]="!canProceed()"
           class="w-full bg-[#B85C38] hover:bg-[#9A4A2C] text-white font-medium py-4 rounded-lg transition-colors disabled:opacity-60"
         >
-          {{ creatingIntent() ? 'Preparing…' : 'Continue to payment' }}
+          {{ checkingAvailability() ? 'Checking availability…' : creatingIntent() ? 'Preparing…' : 'Continue to payment' }}
         </button>
 
         @if (intentError()) {
@@ -100,15 +114,52 @@ export class CheckoutComponent {
   private auth = inject(AuthService);
   private supabase = inject(SupabaseService);
   private router = inject(Router);
+  private productService = inject(ProductService);
 
   step = signal<Step>('pickup');
   pickup = signal<{ date: string; time: string } | null>(null);
   clientSecret = signal<string | null>(null);
   creatingIntent = signal(false);
   intentError = signal('');
+  availabilityWarnings = signal<string[]>([]);
+  checkingAvailability = signal(false);
+  canProceed = computed(() =>
+    !!this.pickup() &&
+    !this.creatingIntent() &&
+    !this.checkingAvailability() &&
+    this.availabilityWarnings().length === 0
+  );
 
   onPickupSelected(selection: { date: string; time: string } | null) {
     this.pickup.set(selection);
+    this.availabilityWarnings.set([]);
+    if (selection) {
+      this.checkAvailability(selection.date);
+    }
+  }
+
+  private async checkAvailability(date: string): Promise<void> {
+    this.checkingAvailability.set(true);
+    this.availabilityWarnings.set([]);
+    try {
+      const usage = await this.productService.getDailyUsage(date);
+      const warnings: string[] = [];
+      for (const item of this.cart.items()) {
+        const alreadyOrdered = usage[item.product.id] ?? 0;
+        const remaining = Math.max(0, item.product.daily_limit - alreadyOrdered);
+        if (item.quantity > remaining) {
+          warnings.push(
+            `${item.product.name}: only ${remaining} remaining for this date (you have ${item.quantity} in cart)`
+          );
+        }
+      }
+      this.availabilityWarnings.set(warnings);
+    } catch {
+      // Silent fail — server-side check in the edge function remains the gate
+      this.availabilityWarnings.set([]);
+    } finally {
+      this.checkingAvailability.set(false);
+    }
   }
 
   async proceedToPayment() {
