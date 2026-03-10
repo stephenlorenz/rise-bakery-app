@@ -12,9 +12,8 @@ import { ProductCardComponent } from '../product-card/product-card';
   template: `
     <!-- Hero -->
     <section class="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-[#3E2723]">
-      <div class="absolute inset-0 bg-gradient-to-b from-[#3E2723]/60 to-[#3E2723]/80 z-10"></div>
-      <!-- Placeholder hero bg – owner replaces via admin/settings -->
-      <div class="absolute inset-0 bg-gradient-to-br from-[#8D7B68] to-[#3E2723]"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#3E2723]/40 to-[#3E2723]/70 z-10"></div>
+      <div class="absolute inset-0 bg-[url('/hero-bakery.png')] bg-cover bg-center"></div>
       <div class="relative z-20 text-center px-4">
         <p class="text-[#E8D5B7] text-sm tracking-widest uppercase mb-4 font-sans">Handcrafted · Small Batch · Local</p>
         <h1 class="font-serif text-5xl md:text-7xl text-white mb-6 leading-tight">
