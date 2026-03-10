@@ -1,11 +1,5 @@
 import { serve } from 'https://deno.land/std@0.177.0/http/server.ts';
-import Stripe from 'https://esm.sh/stripe@14?target=deno';
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2?target=deno';
-
-const stripe = new Stripe(Deno.env.get('STRIPE_SECRET_KEY')!, {
-  apiVersion: '2024-04-10',
-  httpClient: Stripe.createFetchHttpClient(),
-});
 
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
@@ -18,14 +12,24 @@ serve(async (req) => {
   }
 
   try {
+    // Auth check first, before anything else
+    const authHeader = req.headers.get('Authorization');
+    if (!authHeader) {
+      return new Response(JSON.stringify({ error: 'Unauthorized' }), {
+        status: 401,
+        headers: { ...corsHeaders, 'Content-Type': 'application/json' },
+      });
+    }
+
     const supabase = createClient(
       Deno.env.get('SUPABASE_URL')!,
       Deno.env.get('SUPABASE_ANON_KEY')!,
-      { global: { headers: { Authorization: req.headers.get('Authorization')! } } }
     );
 
-    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    const token = authHeader.replace('Bearer ', '');
+    const { data: { user }, error: authError } = await supabase.auth.getUser(token);
     if (authError || !user) {
+      console.error('Auth failed:', authError?.message ?? 'no user');
       return new Response(JSON.stringify({ error: 'Unauthorized' }), {
         status: 401,
         headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -92,17 +96,25 @@ serve(async (req) => {
       return sum + (product?.price_cents ?? 0) * item.quantity;
     }, 0);
 
-    // Create PaymentIntent
-    const paymentIntent = await stripe.paymentIntents.create({
-      amount: totalCents,
-      currency: 'usd',
-      metadata: {
-        customerId: user.id,
-        pickupDate,
-        pickupTime,
-        items: JSON.stringify(items),
+    // Create PaymentIntent via Stripe REST API (no SDK = no Deno compatibility issues)
+    const stripeRes = await fetch('https://api.stripe.com/v1/payment_intents', {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${Deno.env.get('STRIPE_SECRET_KEY')}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
       },
+      body: new URLSearchParams({
+        amount: String(totalCents),
+        currency: 'usd',
+        'metadata[customerId]': user.id,
+        'metadata[pickupDate]': pickupDate,
+        'metadata[pickupTime]': pickupTime,
+        'metadata[items]': JSON.stringify(items),
+      }),
     });
+
+    const paymentIntent = await stripeRes.json();
+    if (!stripeRes.ok) throw new Error(paymentIntent.error?.message ?? 'Stripe error');
 
     return new Response(JSON.stringify({ clientSecret: paymentIntent.client_secret }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
