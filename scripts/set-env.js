@@ -17,5 +17,6 @@ const content = `export const environment = {
 `;
 
 const dest = path.join(__dirname, '../src/environments/environment.ts');
+fs.mkdirSync(path.dirname(dest), { recursive: true });
 fs.writeFileSync(dest, content);
 console.log('environment.ts generated from Netlify environment variables.');
