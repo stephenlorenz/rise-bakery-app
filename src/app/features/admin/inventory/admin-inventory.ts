@@ -10,20 +10,20 @@ import { Product } from '../../../core/models/product';
   template: `
     <div class="max-w-2xl">
       <div class="flex items-center justify-between mb-6">
-        <h1 class="font-serif text-3xl text-[#3E2723]">Daily Inventory</h1>
+        <h1 class="font-serif text-3xl text-[#1E2347]">Daily Inventory</h1>
         <div>
-          <label class="text-sm text-[#8D7B68] mr-2">Date</label>
+          <label class="text-sm text-[#7279A5] mr-2">Date</label>
           <input type="date" [(ngModel)]="selectedDate" (ngModelChange)="loadInventory()"
-            class="px-3 py-1.5 border border-[#E8D5B7] rounded-lg text-sm bg-[#FAF7F2]" />
+            class="px-3 py-1.5 border border-[#C5CADF] rounded-lg text-sm bg-[#EDECE8]" />
         </div>
       </div>
 
       @if (loading()) {
-        <p class="text-[#8D7B68]">Loading…</p>
+        <p class="text-[#7279A5]">Loading…</p>
       } @else {
-        <div class="bg-white rounded-xl border border-[#E8D5B7] overflow-hidden">
+        <div class="bg-white rounded-xl border border-[#C5CADF] overflow-hidden">
           <table class="w-full text-sm">
-            <thead class="bg-[#F5EFE6] text-[#3E2723] font-medium">
+            <thead class="bg-[#F5EFE6] text-[#1E2347] font-medium">
               <tr>
                 <th class="px-4 py-3 text-left">Product</th>
                 <th class="px-4 py-3 text-center">Daily Limit</th>
@@ -35,9 +35,9 @@ import { Product } from '../../../core/models/product';
             <tbody>
               @for (row of inventory(); track row.product.id) {
                 <tr class="border-t border-[#F5EFE6]">
-                  <td class="px-4 py-3 font-medium text-[#3E2723]">{{ row.product.name }}</td>
-                  <td class="px-4 py-3 text-center text-[#8D7B68]">{{ row.product.daily_limit }}</td>
-                  <td class="px-4 py-3 text-center text-[#3E2723]">{{ row.ordered }}</td>
+                  <td class="px-4 py-3 font-medium text-[#1E2347]">{{ row.product.name }}</td>
+                  <td class="px-4 py-3 text-center text-[#7279A5]">{{ row.product.daily_limit }}</td>
+                  <td class="px-4 py-3 text-center text-[#1E2347]">{{ row.ordered }}</td>
                   <td class="px-4 py-3 text-center font-medium"
                       [class]="row.remaining <= 0 ? 'text-red-600' : row.remaining <= 2 ? 'text-yellow-600' : 'text-green-600'">
                     {{ row.remaining }}

@@ -9,19 +9,19 @@ import { FormsModule } from '@angular/forms';
   imports: [RouterLink, FormsModule],
   template: `
     <div class="max-w-3xl mx-auto px-4 py-12">
-      <h1 class="font-serif text-4xl text-[#3E2723] mb-8">Your Cart</h1>
+      <h1 class="font-serif text-4xl text-[#1E2347] mb-8">Your Cart</h1>
 
       @if (cart.isEmpty()) {
         <div class="text-center py-20">
-          <p class="text-[#8D7B68] text-lg mb-6">Your cart is empty.</p>
-          <a routerLink="/menu" class="bg-[#B85C38] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#9A4A2C] transition-colors">
+          <p class="text-[#7279A5] text-lg mb-6">Your cart is empty.</p>
+          <a routerLink="/menu" class="bg-[#4557A7] text-white px-6 py-3 rounded-lg font-medium hover:bg-[#374899] transition-colors">
             Browse Menu
           </a>
         </div>
       } @else {
         <div class="space-y-4 mb-8">
           @for (item of cart.items(); track item.product.id) {
-            <div class="bg-white rounded-xl border border-[#E8D5B7] p-4 flex items-center gap-4">
+            <div class="bg-white rounded-xl border border-[#C5CADF] p-4 flex items-center gap-4">
               <!-- Image -->
               @if (item.product.image_url) {
                 <img [src]="item.product.image_url" [alt]="item.product.name"
@@ -31,29 +31,29 @@ import { FormsModule } from '@angular/forms';
               }
               <!-- Info -->
               <div class="flex-1 min-w-0">
-                <h3 class="font-serif text-lg text-[#3E2723]">{{ item.product.name }}</h3>
-                <p class="text-[#8D7B68] text-sm">{{ formatPrice(item.product.price_cents) }} each</p>
+                <h3 class="font-serif text-lg text-[#1E2347]">{{ item.product.name }}</h3>
+                <p class="text-[#7279A5] text-sm">{{ formatPrice(item.product.price_cents) }} each</p>
               </div>
               <!-- Quantity -->
               <div class="flex items-center gap-2">
                 <button
                   (click)="cart.updateQuantity(item.product.id, item.quantity - 1)"
-                  class="w-8 h-8 rounded-full border border-[#E8D5B7] flex items-center justify-center text-[#3E2723] hover:bg-[#F5EFE6]"
+                  class="w-8 h-8 rounded-full border border-[#C5CADF] flex items-center justify-center text-[#1E2347] hover:bg-[#F5EFE6]"
                 >−</button>
-                <span class="w-6 text-center font-medium text-[#3E2723]">{{ item.quantity }}</span>
+                <span class="w-6 text-center font-medium text-[#1E2347]">{{ item.quantity }}</span>
                 <button
                   (click)="cart.updateQuantity(item.product.id, item.quantity + 1)"
-                  class="w-8 h-8 rounded-full border border-[#E8D5B7] flex items-center justify-center text-[#3E2723] hover:bg-[#F5EFE6]"
+                  class="w-8 h-8 rounded-full border border-[#C5CADF] flex items-center justify-center text-[#1E2347] hover:bg-[#F5EFE6]"
                 >+</button>
               </div>
               <!-- Line total -->
-              <p class="font-semibold text-[#3E2723] w-20 text-right">
+              <p class="font-semibold text-[#1E2347] w-20 text-right">
                 {{ formatPrice(item.product.price_cents * item.quantity) }}
               </p>
               <!-- Remove -->
               <button
                 (click)="cart.removeItem(item.product.id)"
-                class="text-[#8D7B68] hover:text-red-500 transition-colors"
+                class="text-[#7279A5] hover:text-red-500 transition-colors"
               >
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -64,16 +64,16 @@ import { FormsModule } from '@angular/forms';
         </div>
 
         <!-- Summary -->
-        <div class="bg-white rounded-xl border border-[#E8D5B7] p-6">
+        <div class="bg-white rounded-xl border border-[#C5CADF] p-6">
           <div class="flex justify-between items-center mb-6">
-            <span class="text-[#8D7B68]">Total</span>
-            <span class="font-serif text-2xl text-[#3E2723]">{{ formatPrice(cart.totalCents()) }}</span>
+            <span class="text-[#7279A5]">Total</span>
+            <span class="font-serif text-2xl text-[#1E2347]">{{ formatPrice(cart.totalCents()) }}</span>
           </div>
           <a routerLink="/checkout"
-             class="block w-full bg-[#B85C38] hover:bg-[#9A4A2C] text-white text-center font-medium py-4 rounded-lg transition-colors">
+             class="block w-full bg-[#4557A7] hover:bg-[#374899] text-white text-center font-medium py-4 rounded-lg transition-colors">
             Proceed to Checkout
           </a>
-          <a routerLink="/menu" class="block text-center text-sm text-[#8D7B68] hover:text-[#3E2723] mt-4">
+          <a routerLink="/menu" class="block text-center text-sm text-[#7279A5] hover:text-[#1E2347] mt-4">
             ← Continue shopping
           </a>
         </div>

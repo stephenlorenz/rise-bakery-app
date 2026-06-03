@@ -10,14 +10,14 @@ import { TimeSlot } from '../../../core/models/schedule';
   template: `
     <div class="space-y-6">
       <div>
-        <label class="block text-sm font-medium text-[#3E2723] mb-2">Pickup date</label>
+        <label class="block text-sm font-medium text-[#1E2347] mb-2">Pickup date</label>
         @if (loadingDates()) {
-          <div class="h-10 bg-[#E8D5B7] rounded-lg animate-pulse"></div>
+          <div class="h-10 bg-[#C5CADF] rounded-lg animate-pulse"></div>
         } @else {
           <select
             [(ngModel)]="selectedDate"
             (ngModelChange)="onDateChange($event)"
-            class="w-full px-4 py-2.5 border border-[#E8D5B7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B85C38] bg-[#FAF7F2]"
+            class="w-full px-4 py-2.5 border border-[#C5CADF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4557A7] bg-[#EDECE8]"
           >
             <option value="">Select a date</option>
             @for (d of availableDates(); track d.date) {
@@ -31,15 +31,15 @@ import { TimeSlot } from '../../../core/models/schedule';
 
       @if (selectedDate && slots().length > 0) {
         <div>
-          <label class="block text-sm font-medium text-[#3E2723] mb-2">Pickup time</label>
+          <label class="block text-sm font-medium text-[#1E2347] mb-2">Pickup time</label>
           <div class="grid grid-cols-3 gap-2">
             @for (slot of slots(); track slot.time) {
               <button
                 type="button"
                 (click)="selectSlot(slot)"
                 [class]="selectedSlot()?.time === slot.time
-                  ? 'border-2 border-[#B85C38] bg-[#B85C38] text-white rounded-lg py-2 text-sm font-medium'
-                  : 'border border-[#E8D5B7] bg-white text-[#3E2723] rounded-lg py-2 text-sm hover:border-[#B85C38] transition-colors'"
+                  ? 'border-2 border-[#4557A7] bg-[#4557A7] text-white rounded-lg py-2 text-sm font-medium'
+                  : 'border border-[#C5CADF] bg-white text-[#1E2347] rounded-lg py-2 text-sm hover:border-[#4557A7] transition-colors'"
               >
                 {{ slot.label }}
               </button>
@@ -47,7 +47,7 @@ import { TimeSlot } from '../../../core/models/schedule';
           </div>
         </div>
       } @else if (selectedDate && slots().length === 0 && !loadingSlots()) {
-        <p class="text-sm text-[#8D7B68]">No pickup slots available for this date.</p>
+        <p class="text-sm text-[#7279A5]">No pickup slots available for this date.</p>
       }
     </div>
   `,

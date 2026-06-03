@@ -10,21 +10,21 @@ import { Product } from '../../../core/models/product';
   template: `
     <div>
       <div class="flex items-center justify-between mb-6">
-        <h1 class="font-serif text-3xl text-[#3E2723]">Products</h1>
+        <h1 class="font-serif text-3xl text-[#1E2347]">Products</h1>
         <button
           (click)="openForm(null)"
-          class="bg-[#B85C38] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#9A4A2C] transition-colors"
+          class="bg-[#4557A7] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#374899] transition-colors"
         >
           + Add product
         </button>
       </div>
 
       @if (loading()) {
-        <p class="text-[#8D7B68]">Loading…</p>
+        <p class="text-[#7279A5]">Loading…</p>
       } @else {
-        <div class="bg-white rounded-xl border border-[#E8D5B7] overflow-hidden">
+        <div class="bg-white rounded-xl border border-[#C5CADF] overflow-hidden">
           <table class="w-full text-sm">
-            <thead class="bg-[#F5EFE6] text-[#3E2723] font-medium">
+            <thead class="bg-[#F5EFE6] text-[#1E2347] font-medium">
               <tr>
                 <th class="px-4 py-3 text-left">Product</th>
                 <th class="px-4 py-3 text-left">Price</th>
@@ -43,11 +43,11 @@ import { Product } from '../../../core/models/product';
                       } @else {
                         <div class="w-10 h-10 rounded-lg bg-[#F5EFE6]"></div>
                       }
-                      <span class="font-medium text-[#3E2723]">{{ product.name }}</span>
+                      <span class="font-medium text-[#1E2347]">{{ product.name }}</span>
                     </div>
                   </td>
-                  <td class="px-4 py-3 text-[#8D7B68]">{{ formatPrice(product.price_cents) }}</td>
-                  <td class="px-4 py-3 text-[#8D7B68]">{{ product.daily_limit }}</td>
+                  <td class="px-4 py-3 text-[#7279A5]">{{ formatPrice(product.price_cents) }}</td>
+                  <td class="px-4 py-3 text-[#7279A5]">{{ product.daily_limit }}</td>
                   <td class="px-4 py-3">
                     <span [class]="product.is_active ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'"
                           class="text-xs px-2 py-1 rounded-full font-medium">
@@ -55,7 +55,7 @@ import { Product } from '../../../core/models/product';
                     </span>
                   </td>
                   <td class="px-4 py-3 text-right space-x-2">
-                    <button (click)="openForm(product)" class="text-[#B85C38] hover:underline text-sm">Edit</button>
+                    <button (click)="openForm(product)" class="text-[#4557A7] hover:underline text-sm">Edit</button>
                     <button (click)="deleteProduct(product)" class="text-red-500 hover:underline text-sm">Delete</button>
                   </td>
                 </tr>
@@ -69,54 +69,54 @@ import { Product } from '../../../core/models/product';
       @if (showForm()) {
         <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
           <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg p-6 max-h-[90vh] overflow-y-auto">
-            <h2 class="font-serif text-2xl text-[#3E2723] mb-5">
+            <h2 class="font-serif text-2xl text-[#1E2347] mb-5">
               {{ editingProduct() ? 'Edit product' : 'New product' }}
             </h2>
 
             <form (ngSubmit)="saveProduct()" class="space-y-4">
               <div>
-                <label class="block text-sm font-medium text-[#3E2723] mb-1">Name *</label>
+                <label class="block text-sm font-medium text-[#1E2347] mb-1">Name *</label>
                 <input type="text" [(ngModel)]="form.name" name="name" required
-                  class="w-full px-3 py-2 border border-[#E8D5B7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B85C38] bg-[#FAF7F2]" />
+                  class="w-full px-3 py-2 border border-[#C5CADF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4557A7] bg-[#EDECE8]" />
               </div>
               <div>
-                <label class="block text-sm font-medium text-[#3E2723] mb-1">Description</label>
+                <label class="block text-sm font-medium text-[#1E2347] mb-1">Description</label>
                 <textarea [(ngModel)]="form.description" name="description" rows="3"
-                  class="w-full px-3 py-2 border border-[#E8D5B7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B85C38] bg-[#FAF7F2]"></textarea>
+                  class="w-full px-3 py-2 border border-[#C5CADF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4557A7] bg-[#EDECE8]"></textarea>
               </div>
               <div class="grid grid-cols-2 gap-4">
                 <div>
-                  <label class="block text-sm font-medium text-[#3E2723] mb-1">Price ($) *</label>
+                  <label class="block text-sm font-medium text-[#1E2347] mb-1">Price ($) *</label>
                   <input type="number" [(ngModel)]="form.priceUsd" name="price" step="0.01" min="0" required
-                    class="w-full px-3 py-2 border border-[#E8D5B7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B85C38] bg-[#FAF7F2]" />
+                    class="w-full px-3 py-2 border border-[#C5CADF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4557A7] bg-[#EDECE8]" />
                 </div>
                 <div>
-                  <label class="block text-sm font-medium text-[#3E2723] mb-1">Daily limit</label>
+                  <label class="block text-sm font-medium text-[#1E2347] mb-1">Daily limit</label>
                   <input type="number" [(ngModel)]="form.daily_limit" name="daily_limit" min="0"
-                    class="w-full px-3 py-2 border border-[#E8D5B7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B85C38] bg-[#FAF7F2]" />
+                    class="w-full px-3 py-2 border border-[#C5CADF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4557A7] bg-[#EDECE8]" />
                 </div>
               </div>
               <div>
-                <label class="block text-sm font-medium text-[#3E2723] mb-1">Display order</label>
+                <label class="block text-sm font-medium text-[#1E2347] mb-1">Display order</label>
                 <input type="number" [(ngModel)]="form.display_order" name="display_order"
-                  class="w-full px-3 py-2 border border-[#E8D5B7] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#B85C38] bg-[#FAF7F2]" />
+                  class="w-full px-3 py-2 border border-[#C5CADF] rounded-lg focus:outline-none focus:ring-2 focus:ring-[#4557A7] bg-[#EDECE8]" />
               </div>
               <div class="flex items-center gap-2">
                 <input type="checkbox" [(ngModel)]="form.is_active" name="is_active" id="is_active"
-                  class="rounded border-[#E8D5B7]" />
-                <label for="is_active" class="text-sm text-[#3E2723]">Active (visible to customers)</label>
+                  class="rounded border-[#C5CADF]" />
+                <label for="is_active" class="text-sm text-[#1E2347]">Active (visible to customers)</label>
               </div>
 
               <!-- Image upload -->
               <div>
-                <label class="block text-sm font-medium text-[#3E2723] mb-1">Product image</label>
+                <label class="block text-sm font-medium text-[#1E2347] mb-1">Product image</label>
                 @if (form.image_url) {
                   <img [src]="form.image_url" alt="Product image" class="w-32 h-32 object-cover rounded-lg mb-2" />
                 }
                 <input type="file" accept="image/*" (change)="onFileChange($event)"
-                  class="text-sm text-[#8D7B68]" />
+                  class="text-sm text-[#7279A5]" />
                 @if (uploadingImage()) {
-                  <p class="text-xs text-[#8D7B68] mt-1">Uploading image…</p>
+                  <p class="text-xs text-[#7279A5] mt-1">Uploading image…</p>
                 }
               </div>
 
@@ -126,11 +126,11 @@ import { Product } from '../../../core/models/product';
 
               <div class="flex gap-3 pt-2">
                 <button type="submit" [disabled]="saving() || uploadingImage()"
-                  class="flex-1 bg-[#B85C38] text-white py-2.5 rounded-lg font-medium hover:bg-[#9A4A2C] transition-colors disabled:opacity-60">
+                  class="flex-1 bg-[#4557A7] text-white py-2.5 rounded-lg font-medium hover:bg-[#374899] transition-colors disabled:opacity-60">
                   {{ saving() ? 'Saving…' : 'Save product' }}
                 </button>
                 <button type="button" (click)="closeForm()"
-                  class="flex-1 border border-[#E8D5B7] text-[#3E2723] py-2.5 rounded-lg font-medium hover:bg-[#F5EFE6] transition-colors">
+                  class="flex-1 border border-[#C5CADF] text-[#1E2347] py-2.5 rounded-lg font-medium hover:bg-[#F5EFE6] transition-colors">
                   Cancel
                 </button>
               </div>

@@ -12,25 +12,25 @@ import { RouterLink } from '@angular/router';
   template: `
     <div class="max-w-6xl mx-auto px-4 py-12">
       <div class="mb-10">
-        <h1 class="font-serif text-4xl text-[#3E2723] mb-2">Our Menu</h1>
-        <p class="text-[#8D7B68]">Freshly baked, available for pickup. Quantities are limited.</p>
+        <h1 class="font-serif text-4xl text-[#1E2347] mb-2">Our Menu</h1>
+        <p class="text-[#7279A5]">Freshly baked, available for pickup. Quantities are limited.</p>
       </div>
 
       @if (loading()) {
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           @for (i of [1,2,3,4,5,6]; track i) {
-            <div class="bg-white rounded-2xl overflow-hidden border border-[#E8D5B7] animate-pulse">
-              <div class="aspect-[4/3] bg-[#E8D5B7]"></div>
+            <div class="bg-white rounded-2xl overflow-hidden border border-[#C5CADF] animate-pulse">
+              <div class="aspect-[4/3] bg-[#C5CADF]"></div>
               <div class="p-5 space-y-3">
-                <div class="h-6 bg-[#E8D5B7] rounded w-2/3"></div>
-                <div class="h-4 bg-[#E8D5B7] rounded"></div>
+                <div class="h-6 bg-[#C5CADF] rounded w-2/3"></div>
+                <div class="h-4 bg-[#C5CADF] rounded"></div>
               </div>
             </div>
           }
         </div>
       } @else if (products().length === 0) {
         <div class="text-center py-20">
-          <p class="text-[#8D7B68] text-lg">No products available right now. Check back soon!</p>
+          <p class="text-[#7279A5] text-lg">No products available right now. Check back soon!</p>
         </div>
       } @else {
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
@@ -41,7 +41,7 @@ import { RouterLink } from '@angular/router';
       }
 
       @if (added()) {
-        <div class="fixed bottom-6 right-6 bg-[#3E2723] text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
+        <div class="fixed bottom-6 right-6 bg-[#1E2347] text-white px-5 py-3 rounded-xl shadow-lg text-sm font-medium">
           Added to cart! <a routerLink="/cart" class="underline ml-2">View cart</a>
         </div>
       }

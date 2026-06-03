@@ -5,7 +5,7 @@ import { Product } from '../../../core/models/product';
   selector: 'app-product-card',
   standalone: true,
   template: `
-    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#E8D5B7] flex flex-col hover:shadow-md transition-shadow">
+    <div class="bg-white rounded-2xl overflow-hidden shadow-sm border border-[#C5CADF] flex flex-col hover:shadow-md transition-shadow">
       <!-- Image -->
       <div class="aspect-[4/3] overflow-hidden bg-[#F5EFE6]">
         @if (product.image_url) {
@@ -16,7 +16,7 @@ import { Product } from '../../../core/models/product';
           />
         } @else {
           <div class="w-full h-full flex items-center justify-center">
-            <svg class="w-16 h-16 text-[#E8D5B7]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg class="w-16 h-16 text-[#C5CADF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
             </svg>
@@ -26,15 +26,15 @@ import { Product } from '../../../core/models/product';
 
       <!-- Content -->
       <div class="p-5 flex flex-col flex-1">
-        <h3 class="font-serif text-xl text-[#3E2723] mb-1">{{ product.name }}</h3>
+        <h3 class="font-serif text-xl text-[#1E2347] mb-1">{{ product.name }}</h3>
         @if (product.description) {
-          <p class="text-sm text-[#8D7B68] mb-4 flex-1 line-clamp-2">{{ product.description }}</p>
+          <p class="text-sm text-[#7279A5] mb-4 flex-1 line-clamp-2">{{ product.description }}</p>
         }
         <div class="flex items-center justify-between mt-auto">
-          <span class="text-lg font-semibold text-[#3E2723]">{{ formatPrice(product.price_cents) }}</span>
+          <span class="text-lg font-semibold text-[#1E2347]">{{ formatPrice(product.price_cents) }}</span>
           <button
             (click)="addToCart.emit(product)"
-            class="bg-[#B85C38] hover:bg-[#9A4A2C] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            class="bg-[#4557A7] hover:bg-[#374899] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
           >
             Add to cart
           </button>

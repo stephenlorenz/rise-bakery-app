@@ -11,41 +11,41 @@ const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
   imports: [FormsModule],
   template: `
     <div class="max-w-2xl">
-      <h1 class="font-serif text-3xl text-[#3E2723] mb-8">Pickup Schedule</h1>
+      <h1 class="font-serif text-3xl text-[#1E2347] mb-8">Pickup Schedule</h1>
 
       <!-- Weekly schedule -->
-      <section class="bg-white rounded-xl border border-[#E8D5B7] p-6 mb-8">
-        <h2 class="font-serif text-xl text-[#3E2723] mb-4">Weekly Hours</h2>
+      <section class="bg-white rounded-xl border border-[#C5CADF] p-6 mb-8">
+        <h2 class="font-serif text-xl text-[#1E2347] mb-4">Weekly Hours</h2>
         @if (loading()) {
-          <p class="text-[#8D7B68]">Loading…</p>
+          <p class="text-[#7279A5]">Loading…</p>
         } @else {
           <div class="space-y-3">
             @for (day of schedule(); track day.id) {
               <div class="py-2 border-b border-[#F5EFE6] last:border-0">
                 <div class="flex items-center gap-4">
-                  <span class="w-24 text-sm font-medium text-[#3E2723]">{{ dayName(day.day_of_week) }}</span>
+                  <span class="w-24 text-sm font-medium text-[#1E2347]">{{ dayName(day.day_of_week) }}</span>
                   <input type="checkbox" [(ngModel)]="day.is_open"
                     (ngModelChange)="saveDay(day)"
-                    class="rounded border-[#E8D5B7]" />
+                    class="rounded border-[#C5CADF]" />
                   @if (day.is_open) {
                     <input type="time" [(ngModel)]="day.pickup_start"
                       (change)="saveDay(day)"
-                      class="px-2 py-1 border border-[#E8D5B7] rounded text-sm bg-[#FAF7F2]" />
-                    <span class="text-[#8D7B68] text-sm">to</span>
+                      class="px-2 py-1 border border-[#C5CADF] rounded text-sm bg-[#EDECE8]" />
+                    <span class="text-[#7279A5] text-sm">to</span>
                     <input type="time" [(ngModel)]="day.pickup_end"
                       (change)="saveDay(day)"
                       [class]="timeErrors()[day.id]
-                        ? 'px-2 py-1 border border-red-400 rounded text-sm bg-[#FAF7F2]'
-                        : 'px-2 py-1 border border-[#E8D5B7] rounded text-sm bg-[#FAF7F2]'" />
+                        ? 'px-2 py-1 border border-red-400 rounded text-sm bg-[#EDECE8]'
+                        : 'px-2 py-1 border border-[#C5CADF] rounded text-sm bg-[#EDECE8]'" />
                     <div class="flex items-center gap-1">
                       <input type="number" [(ngModel)]="day.slot_interval_minutes"
                         (change)="saveDay(day)"
                         min="5" max="60" step="5"
-                        class="w-14 px-2 py-1 border border-[#E8D5B7] rounded text-sm bg-[#FAF7F2]" />
-                      <span class="text-xs text-[#8D7B68]">min slots</span>
+                        class="w-14 px-2 py-1 border border-[#C5CADF] rounded text-sm bg-[#EDECE8]" />
+                      <span class="text-xs text-[#7279A5]">min slots</span>
                     </div>
                   } @else {
-                    <span class="text-sm text-[#8D7B68]">Closed</span>
+                    <span class="text-sm text-[#7279A5]">Closed</span>
                   }
                 </div>
                 @if (timeErrors()[day.id]) {
@@ -58,61 +58,61 @@ const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 
       </section>
 
       <!-- Date overrides -->
-      <section class="bg-white rounded-xl border border-[#E8D5B7] p-6">
-        <h2 class="font-serif text-xl text-[#3E2723] mb-4">Date Overrides</h2>
-        <p class="text-sm text-[#8D7B68] mb-4">Override the regular schedule for specific dates (holidays, special events, etc.)</p>
+      <section class="bg-white rounded-xl border border-[#C5CADF] p-6">
+        <h2 class="font-serif text-xl text-[#1E2347] mb-4">Date Overrides</h2>
+        <p class="text-sm text-[#7279A5] mb-4">Override the regular schedule for specific dates (holidays, special events, etc.)</p>
 
         <!-- Add override form -->
         <div class="bg-[#F5EFE6] rounded-lg p-4 mb-4 space-y-3">
           <div class="grid grid-cols-2 gap-3">
             <div>
-              <label class="block text-xs font-medium text-[#3E2723] mb-1">Date</label>
+              <label class="block text-xs font-medium text-[#1E2347] mb-1">Date</label>
               <input type="date" [(ngModel)]="newOverride.date"
-                class="w-full px-2 py-1.5 border border-[#E8D5B7] rounded text-sm bg-white" />
+                class="w-full px-2 py-1.5 border border-[#C5CADF] rounded text-sm bg-white" />
             </div>
             <div class="flex items-end gap-2">
               <input type="checkbox" [(ngModel)]="newOverride.is_open" id="override_open" class="rounded" />
-              <label for="override_open" class="text-sm text-[#3E2723]">Open this day</label>
+              <label for="override_open" class="text-sm text-[#1E2347]">Open this day</label>
             </div>
           </div>
           @if (newOverride.is_open) {
             <div class="grid grid-cols-2 gap-3">
               <div>
-                <label class="block text-xs font-medium text-[#3E2723] mb-1">Start</label>
+                <label class="block text-xs font-medium text-[#1E2347] mb-1">Start</label>
                 <input type="time" [(ngModel)]="newOverride.pickup_start"
-                  class="w-full px-2 py-1.5 border border-[#E8D5B7] rounded text-sm bg-white" />
+                  class="w-full px-2 py-1.5 border border-[#C5CADF] rounded text-sm bg-white" />
               </div>
               <div>
-                <label class="block text-xs font-medium text-[#3E2723] mb-1">End</label>
+                <label class="block text-xs font-medium text-[#1E2347] mb-1">End</label>
                 <input type="time" [(ngModel)]="newOverride.pickup_end"
-                  class="w-full px-2 py-1.5 border border-[#E8D5B7] rounded text-sm bg-white" />
+                  class="w-full px-2 py-1.5 border border-[#C5CADF] rounded text-sm bg-white" />
               </div>
             </div>
           }
           <div>
-            <label class="block text-xs font-medium text-[#3E2723] mb-1">Note (optional)</label>
+            <label class="block text-xs font-medium text-[#1E2347] mb-1">Note (optional)</label>
             <input type="text" [(ngModel)]="newOverride.note" placeholder="e.g. Closed for Thanksgiving"
-              class="w-full px-2 py-1.5 border border-[#E8D5B7] rounded text-sm bg-white" />
+              class="w-full px-2 py-1.5 border border-[#C5CADF] rounded text-sm bg-white" />
           </div>
           @if (overrideError()) {
             <p class="text-xs text-red-600">{{ overrideError() }}</p>
           }
           <button (click)="addOverride()"
-            class="bg-[#B85C38] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#9A4A2C] transition-colors">
+            class="bg-[#4557A7] text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-[#374899] transition-colors">
             Add override
           </button>
         </div>
 
         <!-- Existing overrides -->
         @if (overrides().length === 0) {
-          <p class="text-sm text-[#8D7B68]">No overrides set.</p>
+          <p class="text-sm text-[#7279A5]">No overrides set.</p>
         } @else {
           <div class="space-y-2">
             @for (override of overrides(); track override.id) {
               <div class="flex items-center justify-between py-2 border-b border-[#F5EFE6] last:border-0">
                 <div>
-                  <p class="text-sm font-medium text-[#3E2723]">{{ formatDate(override.date) }}</p>
-                  <p class="text-xs text-[#8D7B68]">
+                  <p class="text-sm font-medium text-[#1E2347]">{{ formatDate(override.date) }}</p>
+                  <p class="text-xs text-[#7279A5]">
                     {{ override.is_open
                       ? 'Open ' + override.pickup_start + ' – ' + override.pickup_end
                       : 'Closed' }}

@@ -10,9 +10,9 @@ import { Order } from '../../../core/models/order';
   template: `
     <div>
       <div class="flex items-center justify-between mb-6">
-        <h1 class="font-serif text-3xl text-[#3E2723]">Orders</h1>
+        <h1 class="font-serif text-3xl text-[#1E2347]">Orders</h1>
         <select [(ngModel)]="statusFilter" (ngModelChange)="applyFilter()"
-          class="px-3 py-2 border border-[#E8D5B7] rounded-lg text-sm bg-[#FAF7F2] text-[#3E2723]">
+          class="px-3 py-2 border border-[#C5CADF] rounded-lg text-sm bg-[#EDECE8] text-[#1E2347]">
           <option value="">All statuses</option>
           <option value="pending_payment">Pending Payment</option>
           <option value="confirmed">Confirmed</option>
@@ -23,19 +23,19 @@ import { Order } from '../../../core/models/order';
       </div>
 
       @if (loading()) {
-        <p class="text-[#8D7B68]">Loading…</p>
+        <p class="text-[#7279A5]">Loading…</p>
       } @else if (filtered().length === 0) {
-        <p class="text-[#8D7B68]">No orders found.</p>
+        <p class="text-[#7279A5]">No orders found.</p>
       } @else {
         <div class="space-y-4">
           @for (order of filtered(); track order.id) {
-            <div class="bg-white rounded-xl border border-[#E8D5B7] overflow-hidden">
+            <div class="bg-white rounded-xl border border-[#C5CADF] overflow-hidden">
               <div class="p-4 flex flex-wrap items-center justify-between gap-4">
                 <div>
-                  <p class="font-medium text-[#3E2723]">
+                  <p class="font-medium text-[#1E2347]">
                     {{ formatDate(order.pickup_date) }} at {{ formatTime(order.pickup_time) }}
                   </p>
-                  <p class="text-sm text-[#8D7B68]">
+                  <p class="text-sm text-[#7279A5]">
                     {{ getCustomerLabel(order) }} · {{ formatPrice(order.total_cents) }}
                   </p>
                 </div>
@@ -43,7 +43,7 @@ import { Order } from '../../../core/models/order';
                   <select
                     [ngModel]="order.status"
                     (ngModelChange)="updateStatus(order, $event)"
-                    class="px-3 py-1.5 border border-[#E8D5B7] rounded-lg text-sm bg-[#FAF7F2]"
+                    class="px-3 py-1.5 border border-[#C5CADF] rounded-lg text-sm bg-[#EDECE8]"
                   >
                     <option value="pending_payment">Pending Payment</option>
                     <option value="confirmed">Confirmed</option>
@@ -56,7 +56,7 @@ import { Order } from '../../../core/models/order';
               @if (order.order_items && order.order_items.length > 0) {
                 <div class="border-t border-[#F5EFE6] px-4 py-3">
                   @for (item of order.order_items; track item.id) {
-                    <div class="flex justify-between text-sm py-0.5 text-[#8D7B68]">
+                    <div class="flex justify-between text-sm py-0.5 text-[#7279A5]">
                       <span>{{ item.product?.name ?? 'Item' }} × {{ item.quantity }}</span>
                       <span>{{ formatPrice(item.unit_price_cents * item.quantity) }}</span>
                     </div>

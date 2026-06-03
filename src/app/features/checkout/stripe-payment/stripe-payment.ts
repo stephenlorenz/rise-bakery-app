@@ -28,7 +28,7 @@ import { environment } from '../../../../environments/environment';
         type="button"
         (click)="confirmPayment()"
         [disabled]="loading() || !ready()"
-        class="w-full bg-[#B85C38] hover:bg-[#9A4A2C] text-white font-medium py-4 rounded-lg transition-colors disabled:opacity-60"
+        class="w-full bg-[#4557A7] hover:bg-[#374899] text-white font-medium py-4 rounded-lg transition-colors disabled:opacity-60"
       >
         {{ loading() ? 'Processing…' : 'Pay ' + formattedTotal }}
       </button>
@@ -61,7 +61,7 @@ export class StripePaymentComponent implements OnInit, OnDestroy {
     }
     this.elements = this.stripe.elements({ clientSecret: this.clientSecret, appearance: {
       theme: 'stripe',
-      variables: { colorPrimary: '#B85C38', fontFamily: 'DM Sans, sans-serif' },
+      variables: { colorPrimary: '#4557A7', fontFamily: 'DM Sans, sans-serif' },
     }});
     this.paymentElement = this.elements.create('payment');
     this.paymentElement.mount('#stripe-payment-element');

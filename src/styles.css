@@ -7,12 +7,12 @@
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'DM Sans', system-ui, sans-serif;
 
-  --color-cream: #FAF7F2;
-  --color-wheat: #E8D5B7;
-  --color-rust: #B85C38;
-  --color-rust-dark: #9A4A2C;
-  --color-brown: #3E2723;
-  --color-warm-gray: #8D7B68;
+  --color-cream: #EDECE8;
+  --color-wheat: #C5CADF;
+  --color-rust: #4557A7;
+  --color-rust-dark: #374899;
+  --color-brown: #1E2347;
+  --color-warm-gray: #7279A5;
 }
 
 body {

@@ -7,31 +7,31 @@ import { Order } from '../../core/models/order';
   standalone: true,
   template: `
     <div class="max-w-3xl mx-auto px-4 py-12">
-      <h1 class="font-serif text-4xl text-[#3E2723] mb-8">My Orders</h1>
+      <h1 class="font-serif text-4xl text-[#1E2347] mb-8">My Orders</h1>
 
       @if (loading()) {
         <div class="space-y-4">
           @for (i of [1,2,3]; track i) {
-            <div class="bg-white rounded-xl border border-[#E8D5B7] p-5 animate-pulse">
-              <div class="h-5 bg-[#E8D5B7] rounded w-1/3 mb-3"></div>
-              <div class="h-4 bg-[#E8D5B7] rounded w-1/2"></div>
+            <div class="bg-white rounded-xl border border-[#C5CADF] p-5 animate-pulse">
+              <div class="h-5 bg-[#C5CADF] rounded w-1/3 mb-3"></div>
+              <div class="h-4 bg-[#C5CADF] rounded w-1/2"></div>
             </div>
           }
         </div>
       } @else if (orders().length === 0) {
         <div class="text-center py-20">
-          <p class="text-[#8D7B68] text-lg">No orders yet. Place your first order!</p>
+          <p class="text-[#7279A5] text-lg">No orders yet. Place your first order!</p>
         </div>
       } @else {
         <div class="space-y-4">
           @for (order of orders(); track order.id) {
-            <div class="bg-white rounded-xl border border-[#E8D5B7] overflow-hidden">
+            <div class="bg-white rounded-xl border border-[#C5CADF] overflow-hidden">
               <div class="p-5 flex items-center justify-between">
                 <div>
-                  <p class="font-medium text-[#3E2723]">
+                  <p class="font-medium text-[#1E2347]">
                     {{ formatDate(order.pickup_date) }} at {{ formatTime(order.pickup_time) }}
                   </p>
-                  <p class="text-sm text-[#8D7B68] mt-1">{{ formatPrice(order.total_cents) }}</p>
+                  <p class="text-sm text-[#7279A5] mt-1">{{ formatPrice(order.total_cents) }}</p>
                 </div>
                 <span [class]="statusClass(order.status)">{{ statusLabel(order.status) }}</span>
               </div>
@@ -40,8 +40,8 @@ import { Order } from '../../core/models/order';
                 <div class="border-t border-[#F5EFE6] px-5 py-3">
                   @for (item of order.order_items; track item.id) {
                     <div class="flex justify-between text-sm py-1">
-                      <span class="text-[#3E2723]">{{ item.product?.name ?? 'Item' }} × {{ item.quantity }}</span>
-                      <span class="text-[#8D7B68]">{{ formatPrice(item.unit_price_cents * item.quantity) }}</span>
+                      <span class="text-[#1E2347]">{{ item.product?.name ?? 'Item' }} × {{ item.quantity }}</span>
+                      <span class="text-[#7279A5]">{{ formatPrice(item.unit_price_cents * item.quantity) }}</span>
                     </div>
                   }
                 </div>
