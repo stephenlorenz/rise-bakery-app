@@ -27,9 +27,7 @@ import { Product } from '../../../core/models/product';
       <!-- Content -->
       <div class="p-5 flex flex-col flex-1">
         <h3 class="font-serif text-xl text-[#1E2347] mb-1">{{ product.name }}</h3>
-        @if (product.description) {
-          <p class="text-sm text-[#7279A5] mb-4 flex-1 line-clamp-2">{{ product.description }}</p>
-        }
+        <p class="text-sm text-[#7279A5] mb-4 flex-1 line-clamp-2 min-h-[2.5rem]">{{ product.description }}</p>
         <div class="flex items-center justify-between mt-auto">
           <span class="text-lg font-semibold text-[#1E2347]">{{ formatPrice(product.price_cents) }}</span>
           <button

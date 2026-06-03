@@ -12,8 +12,8 @@ import { ProductCardComponent } from '../product-card/product-card';
   template: `
     <!-- Hero -->
     <section class="relative h-[70vh] min-h-[480px] flex items-center justify-center overflow-hidden bg-[#1E2347]">
-      <div class="absolute inset-0 bg-gradient-to-b from-[#1E2347]/40 to-[#1E2347]/70 z-10"></div>
-      <div class="absolute inset-0 bg-[url('/hero-bakery.png')] bg-cover bg-center"></div>
+      <div class="absolute inset-0 bg-gradient-to-b from-[#1E2347]/10 to-[#1E2347]/35 z-10"></div>
+      <div class="absolute inset-x-0 top-0 -bottom-[50px] bg-[url('/hero-bakery-v2.png')] bg-cover bg-center"></div>
       <div class="relative z-20 text-center px-4">
         <p class="text-[#C5CADF] text-sm tracking-widest uppercase mb-4 font-sans">Handcrafted · Small Batch · Local</p>
         <h1 class="font-serif text-5xl md:text-7xl text-white mb-6 leading-tight">
