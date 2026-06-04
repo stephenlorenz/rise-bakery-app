@@ -45,5 +45,6 @@ export class AdminDashboardComponent {
     { path: '/admin/orders', label: 'Orders' },
     { path: '/admin/schedule', label: 'Schedule' },
     { path: '/admin/inventory', label: 'Inventory' },
+    { path: '/admin/users', label: 'Users' },
   ];
 }
