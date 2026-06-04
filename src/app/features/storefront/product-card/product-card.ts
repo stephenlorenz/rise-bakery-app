@@ -31,10 +31,21 @@ import { Product } from '../../../core/models/product';
         <div class="flex items-center justify-between mt-auto">
           <span class="text-lg font-semibold text-[#1E2347]">{{ formatPrice(product.price_cents) }}</span>
           <button
-            (click)="addToCart.emit(product)"
-            class="bg-[#4557A7] hover:bg-[#374899] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            (click)="onAddToCart()"
+            [class]="added
+              ? 'bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer'
+              : 'bg-[#4557A7] hover:bg-[#374899] text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer'"
           >
-            Add to cart
+            @if (added) {
+              <span class="flex items-center gap-1">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+                </svg>
+                Added!
+              </span>
+            } @else {
+              Add to cart
+            }
           </button>
         </div>
       </div>
@@ -44,6 +55,14 @@ import { Product } from '../../../core/models/product';
 export class ProductCardComponent {
   @Input({ required: true }) product!: Product;
   @Output() addToCart = new EventEmitter<Product>();
+
+  added = false;
+
+  onAddToCart(): void {
+    this.addToCart.emit(this.product);
+    this.added = true;
+    setTimeout(() => (this.added = false), 1500);
+  }
 
   formatPrice(cents: number): string {
     return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(cents / 100);
